@@ -1,18 +1,42 @@
 #!bin/bash
 
-if [ -d /sgoinfre/Perso/$USER ]; then
-    echo "/sgoinfre/Perso/$USER directory already exists"
+$USER=$(whoami)
+HOME_DIR="/sgoinfre/Perso/$USER"
+BIN_DIR="$HOME_DIR/.local/bin"
+
+
+if [ -d $HOME_DIR ]; then
+    echo "$HOME_DIR directory already exists."
 else
-    mkdir /sgoinfre/Perso/$USER
-    chmod 700 /sgoinfre/Perso/$USER
+    mkdir $HOME_DIR
+    chmod 700 $HOME_DIR
+fi
+if [ -d $BIN_DIR ]; then
+    echo "$BIN_DIR directory already exists."
+else
+    mkdir -p $BIN_DIR
 fi
 
-# Installing stow and neovim
-cd /tmp/
-curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
-curl -LO http://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
-tar -xf nvim-macos.tar.gz
-tar -xf stow-2.3.1.tar.gz && cd stow-2.3.1
-mv /tmp/nvim-macos/* /sgoinfre/Perso/$USER/.local
-./configure --prefix=/sgoinfre/Perso/$USER/.local && make install
-cd -
+# Installing brew, stow and neovim
+if [ -f $BIN_DIR/brew ]; then
+    echo "brew is already installed."
+else
+  curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME_DIR/.local
+fi
+
+if [ -f $BIN_DIR/nvim ]; then
+  echo "nvim is already installed."
+else
+  curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz | tar -xz --strip 1 -C $HOME_DIR/.local
+fi
+
+if [ -f $BIN_DIR/stow ]; then
+    echo "stow is already installed."
+else
+  cd /tmp/
+  curl -LO http://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
+  tar -xf stow-2.3.1.tar.gz
+  ./stow-2.3.1/configure --prefix=$HOME_DIR/.local && make install
+  cd -
+fi
+
