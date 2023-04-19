@@ -1,0 +1,18 @@
+#!bin/bash
+
+if [ -d /sgoinfre/Perso/$USER ]; then
+    echo "/sgoinfre/Perso/$USER directory already exists"
+else
+    mkdir /sgoinfre/Perso/$USER
+    chmod 700 /sgoinfre/Perso/$USER
+fi
+
+# Installing stow and neovim
+cd /tmp/
+curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+curl -LO http://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
+tar -xf nvim-macos.tar.gz
+tar -xf stow-2.3.1.tar.gz && cd stow-2.3.1
+mv /tmp/nvim-macos/* /sgoinfre/Perso/$USER/.local
+./configure --prefix=/sgoinfre/Perso/$USER/.local && make install
+cd -
