@@ -1,21 +1,23 @@
 ##!/usr/bin/env sh
 
 USER=$(whoami) # Making sure USER variable exists
+user_share="/sgoinfre/Perso/$USER"
 
-# Defining $HOME folder
-echo "do you want to use /sgoinfre/Perso/$USER as your home folder? [y/N] "
+# Defining install folder
+echo "do you want to use /sgoinfre/Perso/$USER/.local/bin as your installation folder? [Y/n] "
 read option
-if [ "$option" = 'y' ] || [ "$option" = 'Y' ]; then
-  HOME="/sgoinfre/Perso/$USER"
+if [ "$option" = 'n' ] || [ "$option" = 'N' ]; then
+  bin_dir="$HOME/.local/bin"
+else
+  bin_dir="$user_share/.local/bin"
 fi
-bin_dir="$HOME/.local/bin"
 
 # Making sure folders exist before installing things into them
-if [ -d $HOME ]; then
-    echo "$HOME directory already exists."
+if [ -d $user_share ]; then
+    echo "$user_share directory already exists."
 else
-    mkdir $HOME
-    chmod -R 700 $HOME
+    mkdir $user_share
+    chmod -R 700 $user_share
 fi
 if [ -d $bin_dir ]; then
     echo "$bin_dir directory already exists."
@@ -23,8 +25,9 @@ else
     mkdir -p $bin_dir
 fi
 
-# Installing brew, chezmoi, neovim and kitty
-if [ -f $bin_dir/brew ]; then
+# Installing brew, always in the $HOME folder
+echo "[ brew - begin ]"
+if [ -f $HOME/.local/bin/brew ]; then
     echo "brew is already installed."
 else
     echo "installing brew..."
@@ -32,19 +35,32 @@ else
 fi
 
 echo "fetching repos..."
-$bin_dir/brew update -q
+$HOME/.local/bin/brew update -q
 
 echo "upgrading packages..."
-$bin_dir/brew upgrade -q
-
-echo "installing packages..."
-$bin_dir/brew install -q chezmoi
-$bin_dir/brew install -q neovim
-$bin_dir/brew install -q --cask kitty
-$bin_dir/brew install -q --cask obsidian
+$HOME/.local/bin/brew upgrade -q
 
 echo "cleaning up..."
-$bin_dir/brew cleanup -q
+$HOME/.local/bin/brew cleanup -q
+echo "[ brew - end ]"
+
+# Installing chezmoi, nvim and kitty
+echo "installing chezmoi..."
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $bin_dir
+
+if [ -f $bin_dir/nvim ]; then
+  echo "nvim is already installed."
+else
+  echo "installing nvim..."
+  curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz | tar -xz --strip 1 -C $user_share/.local
+fi
+
+if [ -f $bin_dir/kitty.app ]; then
+  echo "kitty is already installed."
+else
+  curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \
+  dest=/sgoinfre/Perso/anunes-c/.local/bin
+fi
 
 # Dotfiles
-$bin_dir/chezmoi init --apply arthurnunesc
+$bin_dir/chezmoi init --apply https://github.com/arthurnunesc/dotfiles.git
