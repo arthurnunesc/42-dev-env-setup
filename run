@@ -65,5 +65,12 @@ else
   dest=/sgoinfre/Perso/anunes-c/.local/bin
 fi
 
+if [ -f $bin_dir/starship ]; then
+  echo "starship is already installed."
+else
+  echo "installing starship..."
+  curl -L https://github.com/starship/starship/releases/latest/download/starship-x86_64-apple-darwin.tar.gz | tar -xz -C $bin_dir
+fi
+
 # Dotfiles
 $bin_dir/chezmoi init --apply https://github.com/arthurnunesc/dotfiles.git
