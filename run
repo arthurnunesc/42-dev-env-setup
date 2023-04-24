@@ -3,11 +3,12 @@
 $USER=$(whoami) # Making sure USER variable exists
 
 # Defining $HOME folder
-read -r "do you want to use /sgoinfre/Perso/$USER as your home folder? [y/N]" OPTION
-if [ "$OPTION" = 'y' ] || [ "$OPTION" = 'Y' ]; then
+echo "do you want to use /sgoinfre/Perso/$USER as your home folder? [y/N] "
+read option
+if [ "$option" = 'y' ] || [ "$option" = 'Y' ]; then
   HOME="/sgoinfre/Perso/$USER"
 fi
-BIN_DIR="$HOME/.local/bin"
+bin_dir="$HOME/.local/bin"
 
 # Making sure folders exist before installing things into them
 if [ -d $HOME ]; then
@@ -16,14 +17,14 @@ else
     mkdir $HOME
     chmod -R 700 $HOME
 fi
-if [ -d $BIN_DIR ]; then
-    echo "$BIN_DIR directory already exists."
+if [ -d $bin_dir ]; then
+    echo "$bin_dir directory already exists."
 else
-    mkdir -p $BIN_DIR
+    mkdir -p $bin_dir
 fi
 
 # Installing brew, chezmoi, neovim and kitty
-if [ -f $BIN_DIR/brew ]; then
+if [ -f $bin_dir/brew ]; then
     echo "brew is already installed."
 else
     echo "installing brew..."
@@ -31,18 +32,18 @@ else
 fi
 
 echo "fetching repos..."
-brew update
+$bin_dir/brew update -q
 
 echo "upgrading packages..."
-brew upgrade
+$bin_dir/brew upgrade -q
 
 echo "installing packages..."
-brew install chezmoi
-brew install neovim
-brew install --cask kitty
+$bin_dir/brew install -q chezmoi
+$bin_dir/brew install -q neovim
+$bin_dir/brew install -q --cask kitty
 
 echo "cleaning up..."
-brew cleanup
+$bin_dir/brew cleanup -q
 
 # Dotfiles
-chezmoi init --apply arthurnunesc
+$bin_dir/chezmoi init --apply arthurnunesc
