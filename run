@@ -25,25 +25,22 @@ else
     mkdir -p $bin_dir
 fi
 
-# Installing brew, always in the $HOME folder
-echo "[ brew - begin ]"
-if [ -f $HOME/.local/bin/brew ]; then
-    echo "brew is already installed."
-else
-    echo "installing brew..."
-	mkdir -p $HOME/.local
-    curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME/.local
-fi
-
-echo "fetching repos..."
-$HOME/.local/bin/brew update -q
-
-echo "upgrading packages..."
-$HOME/.local/bin/brew upgrade -q
-
-echo "cleaning up..."
-$HOME/.local/bin/brew cleanup -q
-echo "[ brew - end ]"
+# # Installing brew, always in the $HOME folder
+# echo "[ brew - begin ]"
+# if [ -f $HOME/.local/bin/brew ]; then
+#     echo "brew is already installed."
+# else
+#     echo "installing brew..."
+# 	mkdir -p $HOME/.local
+#     curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME/.local
+# fi
+# echo "fetching repos..."
+# $HOME/.local/bin/brew update -q
+# echo "upgrading packages..."
+# $HOME/.local/bin/brew upgrade -q
+# echo "cleaning up..."
+# $HOME/.local/bin/brew cleanup -q
+# echo "[ brew - end ]"
 
 # Installing chezmoi, nvim and kitty
 if [ -f $bin_dir/chezmoi ]; then
