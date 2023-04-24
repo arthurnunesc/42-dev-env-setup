@@ -1,15 +1,20 @@
-#!bin/bash
+##!/usr/bin/env sh
 
-$USER=$(whoami)
-HOME_DIR="/sgoinfre/Perso/$USER"
-BIN_DIR="$HOME_DIR/.local/bin"
+$USER=$(whoami) # Making sure USER variable exists
 
+# Defining $HOME folder
+read -r "do you want to use /sgoinfre/Perso/$USER as your home folder? [y/N]" OPTION
+if [ "$OPTION" = 'y' ] || [ "$OPTION" = 'Y' ]; then
+  HOME="/sgoinfre/Perso/$USER"
+fi
+BIN_DIR="$HOME/.local/bin"
 
-if [ -d $HOME_DIR ]; then
-    echo "$HOME_DIR directory already exists."
+# Making sure folders exist before installing things into them
+if [ -d $HOME ]; then
+    echo "$HOME directory already exists."
 else
-    mkdir $HOME_DIR
-    chmod 700 $HOME_DIR
+    mkdir $HOME
+    chmod -R 700 $HOME
 fi
 if [ -d $BIN_DIR ]; then
     echo "$BIN_DIR directory already exists."
@@ -17,26 +22,27 @@ else
     mkdir -p $BIN_DIR
 fi
 
-# Installing brew, stow and neovim
+# Installing brew, chezmoi, neovim and kitty
 if [ -f $BIN_DIR/brew ]; then
     echo "brew is already installed."
 else
-  curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME_DIR/.local
+    echo "installing brew..."
+    curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME/.local
 fi
 
-if [ -f $BIN_DIR/nvim ]; then
-  echo "nvim is already installed."
-else
-  curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz | tar -xz --strip 1 -C $HOME_DIR/.local
-fi
+echo "fetching repos..."
+brew update
 
-if [ -f $BIN_DIR/stow ]; then
-    echo "stow is already installed."
-else
-  cd /tmp/
-  curl -LO http://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
-  tar -xf stow-2.3.1.tar.gz
-  ./stow-2.3.1/configure --prefix=$HOME_DIR/.local && make install
-  cd -
-fi
+echo "upgrading packages..."
+brew upgrade
 
+echo "installing packages..."
+brew install chezmoi
+brew install neovim
+brew install --cask kitty
+
+echo "cleaning up..."
+brew cleanup
+
+# Dotfiles
+chezmoi init --apply arthurnunesc
