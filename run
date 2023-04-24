@@ -72,5 +72,12 @@ else
   curl -L https://github.com/starship/starship/releases/latest/download/starship-x86_64-apple-darwin.tar.gz | tar -xz -C $bin_dir
 fi
 
+if [ -f $bin_dir/Obsidian ]; then
+  echo "obsidian is already installed."
+else
+  echo "installing obsidian..."
+  curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C $bin_dir
+fi
+
 # Dotfiles
 $bin_dir/chezmoi init --apply https://github.com/arthurnunesc/dotfiles.git
