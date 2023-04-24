@@ -46,8 +46,12 @@ $HOME/.local/bin/brew cleanup -q
 echo "[ brew - end ]"
 
 # Installing chezmoi, nvim and kitty
-echo "installing chezmoi..."
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $bin_dir
+if [ -f $bin_dir/chezmoi ]; then
+  echo "chezmoi is already installed."
+else
+  echo "installing chezmoi..."
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $bin_dir
+fi
 
 if [ -f $bin_dir/nvim ]; then
   echo "nvim is already installed."
@@ -59,6 +63,7 @@ fi
 if [ -f $bin_dir/kitty.app ]; then
   echo "kitty is already installed."
 else
+  echo "installing kitty..."
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \
   dest=/sgoinfre/Perso/anunes-c/.local/bin
 fi
