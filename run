@@ -31,6 +31,7 @@ if [ -f $HOME/.local/bin/brew ]; then
     echo "brew is already installed."
 else
     echo "installing brew..."
+	mkdir -p $HOME/.local
     curl -L https://github.com/Homebrew/brew/tarball/master | tar -xz --strip 1 -C $HOME/.local
 fi
 
