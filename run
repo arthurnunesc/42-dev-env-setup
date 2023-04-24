@@ -41,6 +41,7 @@ echo "installing packages..."
 $bin_dir/brew install -q chezmoi
 $bin_dir/brew install -q neovim
 $bin_dir/brew install -q --cask kitty
+$bin_dir/brew install -q --cask obsidian
 
 echo "cleaning up..."
 $bin_dir/brew cleanup -q
