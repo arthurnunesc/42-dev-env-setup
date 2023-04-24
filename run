@@ -54,7 +54,7 @@ if [ -f $bin_dir/nvim ]; then
   echo "nvim is already installed."
 else
   echo "installing nvim..."
-  curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz | tar -xz --strip 1 -C $user_share/.local
+  curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-macos.tar.gz | tar -xz --strip 1 -C $user_share/.local
 fi
 
 if [ -f $bin_dir/kitty.app ]; then
