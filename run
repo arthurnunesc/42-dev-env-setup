@@ -1,4 +1,4 @@
-##!/usr/bin/env sh
+#!/usr/bin/env sh
 
 USER=$(whoami) # Making sure USER variable exists
 user_share="/sgoinfre/Perso/$USER"
@@ -57,7 +57,7 @@ else
   curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-macos.tar.gz | tar -xz --strip 1 -C $user_share/.local
 fi
 
-if [ -f $bin_dir/kitty.app ]; then
+if [ -f $bin_dir/kitty ]; then
   echo "kitty is already installed."
 else
   echo "installing kitty..."
