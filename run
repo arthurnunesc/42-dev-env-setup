@@ -1,6 +1,6 @@
 ##!/usr/bin/env sh
 
-$USER=$(whoami) # Making sure USER variable exists
+USER=$(whoami) # Making sure USER variable exists
 
 # Defining $HOME folder
 echo "do you want to use /sgoinfre/Perso/$USER as your home folder? [y/N] "
