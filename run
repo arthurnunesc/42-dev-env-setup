@@ -80,4 +80,4 @@ else
 fi
 
 # Dotfiles
-$bin_dir/chezmoi init --apply https://github.com/arthurnunesc/dotfiles.git
+$bin_dir/chezmoi init --apply git@github.com:arthurnunesc/dotfiles.git
