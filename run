@@ -79,5 +79,8 @@ else
   curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C $bin_dir
 fi
 
+# Installing command line utilities
+brew install fzf
+
 # Dotfiles
 $bin_dir/chezmoi init --apply git@github.com:arthurnunesc/dotfiles.git
