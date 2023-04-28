@@ -31,7 +31,7 @@ if [ -f "$HOME"/.brew/bin/brew ]; then
   echo "brew is already installed."
 else
   echo "installing brew..."
-  rm -rf "$HOME"/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew
+  rm -rf "$HOME"/.brew && git clone --depth=1 https://github.com/Homebrew/brew "$HOME"/.brew
 fi
 echo "fetching repos..."
 "$HOME"/.brew/bin/brew update -q
