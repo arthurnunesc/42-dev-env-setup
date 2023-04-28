@@ -66,7 +66,7 @@ if [ -f "$bin_dir"/kitty ]; then
 else
   echo "installing kitty..."
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \
-  dest=/sgoinfre/Perso/anunes-c/.local/bin
+  dest="$bin_dir"
 fi
 
 if [ -f "$bin_dir"/starship ]; then
