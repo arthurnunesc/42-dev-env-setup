@@ -4,7 +4,7 @@ USER=$(whoami) # Making sure USER variable exists
 user_share="/sgoinfre/Perso/$USER"
 
 # Defining install folder
-echo "do you want to use /sgoinfre/Perso/$USER/.local/bin as your installation folder? [Y/n] "
+printf "\033[33mdo you want to use /sgoinfre/Perso/%s/.local/bin as your binaries folder?\033[0m [Y/n]\n" "$USER"
 read option
 if [ "$option" = 'n' ] || [ "$option" = 'N' ]; then
   bin_dir="$HOME/.local/bin"
@@ -14,46 +14,48 @@ fi
 
 # Making sure folders exist before installing things into them
 if [ -d "$user_share" ]; then
-    echo "$user_share directory already exists."
+  echo "$user_share directory already exists."
 else
-    mkdir "$user_share"
-    chmod -R 700 "$user_share"
+  echo "creating $user_share directory..."
+  mkdir "$user_share"
+  chmod -R 700 "$user_share"
 fi
 if [ -d "$bin_dir" ]; then
-    echo "$bin_dir directory already exists."
+  echo "$bin_dir directory already exists."
 else
-    mkdir -p "$bin_dir"
+  echo "creating $bin_dir directory..."
+  mkdir -p "$bin_dir"
 fi
 
 # Installing brew, always in the $HOME/.brew folder
-echo "[ brew - begin ]"
+printf "\033[34m[ brew - begin ]\033[40m\n"
 if [ -f "$HOME"/.brew/bin/brew ]; then
-  echo "brew is already installed."
+  printf "\033[35mbrew\033[0m is already installed.\n"
 else
-  echo "installing brew..."
+  printf "installing \033[35mbrew\033[0m...\n"
   rm -rf "$HOME"/.brew && git clone --depth=1 https://github.com/Homebrew/brew "$HOME"/.brew
 fi
-echo "fetching repos..."
+echo "fetching repo updates..."
 "$HOME"/.brew/bin/brew update -q
 echo "upgrading packages..."
 "$HOME"/.brew/bin/brew upgrade -q
 echo "cleaning up..."
 "$HOME"/.brew/bin/brew cleanup -q
-echo "[ brew - end ]"
+printf "\033[34m[ brew - end ]\033[40m\n"
 
 
-# Installing chezmoi, nvim, kitty and starship
+# Installing chezmoi, nvim, kitty, starship and obsidian
 if [ -f "$bin_dir"/chezmoi ]; then
-  echo "chezmoi is already installed."
+  printf "\033[35mchezmoi\033[0m is already installed.\n"
 else
-  echo "installing chezmoi..."
+  printf "installing \033[35mchezmoi\033[0m...\n"
   sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$bin_dir"
 fi
 
 if [ -f "$bin_dir"/nvim ]; then
-  echo "nvim is already installed."
+  printf "\033[35mnvim\033[0m is already installed.\n"
 else
-  echo "installing nvim..."
+  printf "installing \033[35mnvim\033[0m...\n"
   if [ "$option" = 'n' ] || [ "$option" = 'N' ]; then
     curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-macos.tar.gz | tar -xz --strip 1 -C "$HOME"/.local
   else
@@ -62,29 +64,29 @@ else
 fi
 
 if [ -f "$bin_dir"/kitty ]; then
-  echo "kitty is already installed."
+  printf "\033[35mkitty\033[0m is already installed.\n"
 else
-  echo "installing kitty..."
+  printf "installing \033[35mkitty\033[0m...\n"
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \
   dest="$bin_dir"
 fi
 
 if [ -f "$bin_dir"/starship ]; then
-  echo "starship is already installed."
+  printf "\033[35mstarship\033[0m is already installed.\n"
 else
-  echo "installing starship..."
+  printf "installing \033[35mstarship\033[0m...\n"
   curl -L https://github.com/starship/starship/releases/latest/download/starship-x86_64-apple-darwin.tar.gz | tar -xz -C "$bin_dir"
 fi
 
 if [ -f "$bin_dir"/Obsidian ]; then
-  echo "obsidian is already installed."
+  printf "\033[35mobsidian\033[0m is already installed.\n"
 else
-  echo "installing obsidian..."
+  printf "installing \033[35mobsidian\033[0m...\n"
   curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C "$bin_dir"
 fi
 
 # Installing command line utilities
-brew install fzf
+brew install -q fzf
 
 # Dotfiles
 "$bin_dir"/chezmoi init --apply git@github.com:arthurnunesc/dotfiles.git
