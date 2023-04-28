@@ -25,7 +25,7 @@ else
     mkdir -p $bin_dir
 fi
 
-# Installing brew, always in the $HOME folder
+# Installing brew, always in the $HOME/.brew folder
 echo "[ brew - begin ]"
 if [ -f $HOME/.brew/bin/brew ]; then
   echo "brew is already installed."
