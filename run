@@ -4,22 +4,34 @@ USER=$(whoami) # Making sure USER variable exists
 user_share="/sgoinfre/Perso/$USER"
 
 # Defining install folder
-printf "\033[33mdo you want to use /sgoinfre/Perso/%s/.local/bin as your binaries folder?\033[0m [Y/n]\n" "$USER"
+printf "\033[34mwhat folder do you want to use as your binaries folder?\033[0m [Y/n]\n"
+printf "1. /sgoinfre/Perso/%s/.local/bin\n" "$USER"
+printf "2. %s/.local/bin\n" "$HOME"
 read option
-if [ "$option" = 'n' ] || [ "$option" = 'N' ]; then
-  bin_dir="$HOME/.local/bin"
-else
+counter=0
+while [ -z "$option" ] && [ "$counter" -lt 3 ]; do
+  printf "\033[33mplease enter a valid option\033[0m\n"
+  read option
+  counter=$((counter + 1))
+done
+if [ -z "$option" ]; then
+  printf "\033[31mno valid option entered, exiting...\033[0m\n"
+  exit 1
+fi
+if [ "$option" -eq '1' ]; then
   bin_dir="$user_share/.local/bin"
+  if [ -d "$user_share" ]; then
+    echo "$user_share directory already exists."
+  else
+    echo "creating $user_share directory..."
+    mkdir "$user_share"
+    chmod -R 700 "$user_share"
+  fi
+elif [ "$option" -eq '2' ]; then
+  bin_dir="$HOME/.local/bin"
 fi
 
-# Making sure folders exist before installing things into them
-if [ -d "$user_share" ]; then
-  echo "$user_share directory already exists."
-else
-  echo "creating $user_share directory..."
-  mkdir "$user_share"
-  chmod -R 700 "$user_share"
-fi
+# Making sure binaries folder exist before installing things into them
 if [ -d "$bin_dir" ]; then
   echo "$bin_dir directory already exists."
 else
@@ -85,7 +97,7 @@ else
   curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C "$bin_dir"
 fi
 
-# Installing command line utilities
+# Installing command li ne utilities
 brew install -q fzf
 
 # Dotfiles
