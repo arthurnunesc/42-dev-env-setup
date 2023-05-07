@@ -4,7 +4,7 @@ USER=$(whoami) # Making sure USER variable exists
 user_share="/sgoinfre/Perso/$USER"
 
 # Defining install folder
-printf "\033[34mwhat folder do you want to use as your binaries folder?\033[0m [Y/n]\n"
+printf "\033[34mwhat folder do you want to use as your binaries folder?\033[0m\n"
 printf "1. /sgoinfre/Perso/%s/.local/bin\n" "$USER"
 printf "2. %s/.local/bin\n" "$HOME"
 read option
@@ -75,7 +75,7 @@ else
   fi
 fi
 
-if [ -f "$bin_dir"/kitty ]; then
+if [ -f "$bin_dir"/kitty.app ]; then
   printf "\033[35mkitty\033[0m is already installed.\n"
 else
   printf "installing \033[35mkitty\033[0m...\n"
@@ -90,7 +90,7 @@ else
   curl -L https://github.com/starship/starship/releases/latest/download/starship-x86_64-apple-darwin.tar.gz | tar -xz -C "$bin_dir"
 fi
 
-if [ -f "$bin_dir"/Obsidian ]; then
+if [ -f "$bin_dir"/Obsidian.app ]; then
   printf "\033[35mobsidian\033[0m is already installed.\n"
 else
   printf "installing \033[35mobsidian\033[0m...\n"
