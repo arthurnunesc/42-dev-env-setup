@@ -24,11 +24,17 @@ if [ "$option" -eq '1' ]; then
     echo "$user_share directory already exists."
   else
     echo "creating $user_share directory..."
-    mkdir "$user_share"
+    mkdir -p "$user_share"
     chmod -R 700 "$user_share"
   fi
 elif [ "$option" -eq '2' ]; then
   bin_dir="$HOME/.local/bin"
+  if [ -d "$bin_dir" ]; then
+    echo "$bin_dir directory already exists."
+  else
+    echo "creating $bin_dir directory..."
+    mkdir -p "$bin_dir"
+  fi
 fi
 
 # Making sure binaries folder exist before installing things into them
@@ -56,7 +62,7 @@ echo "cleaning up..."
 printf "\033[34m[ brew - end ]\033[40m\n"
 
 
-# Installing chezmoi, nvim, kitty, starship and obsidian
+# Installing chezmoi, stow, nvim, kitty, starship and obsidian
 if [ -f "$bin_dir"/chezmoi ]; then
   printf "\033[35mchezmoi\033[0m is already installed.\n"
 else
@@ -64,11 +70,24 @@ else
   sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$bin_dir"
 fi
 
+if [ -f "$bin_dir"/stow ]; then
+  printf "\033[35mstow\033[0m is already installed.\n"
+else
+  printf "installing \033[35mstow\033[0m...\n"
+  curl -L http://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz | tar -xz -C /tmp/
+  cd /tmp/stow-2.3.1
+    if [ "$option" -eq '2' ]; then
+	  ./stow-2.3.1/configure --prefix=$"$HOME"/.local && make install
+	else
+	  ./stow-2.3.1/configure --prefix="$user_share"/.local && make install
+  cd -
+fi
+
 if [ -f "$bin_dir"/nvim ]; then
   printf "\033[35mnvim\033[0m is already installed.\n"
 else
   printf "installing \033[35mnvim\033[0m...\n"
-  if [ "$option" = 'n' ] || [ "$option" = 'N' ]; then
+  if [ "$option" -eq '2' ]; then
     curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-macos.tar.gz | tar -xz --strip 1 -C "$HOME"/.local
   else
     curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-macos.tar.gz | tar -xz --strip 1 -C "$user_share"/.local
@@ -97,7 +116,7 @@ else
   curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C "$bin_dir"
 fi
 
-# Installing command li ne utilities
+# Installing command line utilities
 brew install -q fzf
 
 # Dotfiles
