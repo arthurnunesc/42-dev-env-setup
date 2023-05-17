@@ -121,3 +121,10 @@ brew install -q fzf
 
 # Dotfiles
 "$bin_dir"/chezmoi init --apply git@github.com:arthurnunesc/dotfiles.git
+
+printf "setting up \033[35mgit variables\033[0m..."
+git config --global user.email "arthurnunesc@proton.me"
+git config --global user.name "Arthur Nunes"
+git config --global core.editor "nvim"
+
+printf "\n **everything done** \n"
