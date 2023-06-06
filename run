@@ -80,6 +80,7 @@ else
 	  ./stow-2.3.1/configure --prefix=$"$HOME"/.local && make install
 	else
 	  ./stow-2.3.1/configure --prefix="$user_share"/.local && make install
+	fi
   cd -
 fi
 
@@ -113,7 +114,7 @@ if [ -f "$bin_dir"/Obsidian.app ]; then
   printf "\033[35mobsidian\033[0m is already installed.\n"
 else
   printf "installing \033[35mobsidian\033[0m...\n"
-  curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.16/Obsidian-1.1.16-universal.dmg | tar -xz -C "$bin_dir"
+  curl -L https://github.com/obsidianmd/obsidian-releases/releases/download/v1.3.5/Obsidian-1.3.5-universal.dmg | tar -xz -C "$bin_dir"
 fi
 
 # Installing command line utilities
